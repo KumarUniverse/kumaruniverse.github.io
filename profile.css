@@ -1,0 +1,13 @@
+h1 {
+    font-family: cursive, sans-serif, monospace;
+    color: white;
+    font-size: 50px;  
+    text-align: center;    
+}
+
+h2 {
+  font-family: cursive, sans-serif, monospace;
+  color: gray;
+  font-size: 25px;
+  text-align: center;
+}
