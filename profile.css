@@ -1,12 +1,12 @@
 h1 {
-    font-family: sans-serif, monospace;
+    font-family: "sans-serif", monospace;
     color: white;
     font-size: 50px;  
     text-align: center;    
 }
 
 h2 {
-  font-family: sans-serif, monospace;
+  font-family: "sans-serif", monospace;
   color: white;
   font-size: 20px;
   text-align: center;
