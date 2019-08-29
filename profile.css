@@ -13,13 +13,13 @@ h2 {
   text-align: center;
 }
 
-html {
+html, body {
+    margin: 0;
+    padding: 0;
     height: 100%;
 }
 
 body {
-    height: 100%;
-    margin: 0;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background: linear-gradient(135deg,
