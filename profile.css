@@ -1,29 +1,27 @@
 h1 {
-    font-family: cursive, sans-serif, monospace;
+    font-family: 'Quicksand', sans-serif, monospace;
     color: white;
-    font-size: 50px;  
+    font-size: 50px;
+    font-weight: 300;
     text-align: center;    
 }
 
 h2 {
-  font-family: cursive, sans-serif, monospace;
+  font-family: 'Quicksand', sans-serif, monospace;
   color: white;
   font-size: 20px;
   text-align: center;
 }
 
 body {
+    height: 100%;
     background:
-        linear-gradient(135deg, rgb(243, 107, 55) 0%,
-        rgb(243, 107, 55) 23%,
-        rgb(244, 133, 60) 23%,
-        rgb(244, 133, 60) 27%,
-        rgb(245, 159, 64) 27%,
-        rgb(245, 159, 64) 73%,
-        rgb(245, 186, 69) 73%,
-        rgb(245, 186, 69) 74%,
-        rgb(246, 212, 73) 74%,
-        rgb(246, 212, 73) 78%,
-        rgb(247, 238, 78) 78%,
-        rgb(247, 238, 78) 100%);
+        linear-gradient(135deg, rgb(138, 229, 83) 0%,
+            rgb(138, 229, 83) 22%,
+            rgb(110, 203, 71) 22%,
+            rgb(110, 203, 71) 28%,
+            rgb(83, 176, 59) 28%,
+            rgb(83, 176, 59) 72%,
+            rgb(55, 150, 47) 72%,
+            rgb(55, 150, 47) 100%);
 }
