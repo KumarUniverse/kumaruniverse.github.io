@@ -13,10 +13,13 @@ h2 {
   text-align: center;
 }
 
+html {
+    height: 100%;
+}
+
 body {
-    height: 200vh;
-    background:
-        linear-gradient(135deg,
+    width: 100%;
+    background: linear-gradient(135deg,
             rgba(19, 176, 223, 0.26) 0%,
             rgba(19, 176, 223, 0.26) 23%,
             rgba(16, 160, 197, 0.26) 23%,
