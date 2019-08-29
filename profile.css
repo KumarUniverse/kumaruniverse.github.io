@@ -13,7 +13,6 @@ h2 {
 }
 
 body {
-    height: 100vh;
     background:
         linear-gradient(135deg, rgb(243, 107, 55) 0%,
         rgb(243, 107, 55) 23%,
