@@ -1,0 +1,142 @@
+/* Base styles and light theme variables */
+:root {
+    --bg-color: #FFFFFF;
+    --text-color: #111827;
+    --primary-color: #023E8A;
+    --secondary-color: #82EEFD;
+    --accent-color: #00FFEF;
+    --card-bg-color: #F9FAFB;
+    --header-bg-color: rgba(255, 255, 255, 0.8);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --dot-base-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Dark theme variables */
+html.dark {
+    --bg-color: #0A192F;
+    --text-color: #E2E8F0;
+    --primary-color: #82EEFD;
+    --secondary-color: #00FFEF;
+    --accent-color: #023E8A;
+    --card-bg-color: #1E293B;
+    --header-bg-color: rgba(10, 25, 47, 0.8);
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --dot-base-color: rgba(255, 255, 255, 0.12);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Canvas for background effect */
+.wave-canvas {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 10vw;
+    z-index: -1;
+}
+#left-wave {
+    left: 0;
+}
+#right-wave {
+    right: 0;
+}
+
+/* Custom font for headers */
+.font-varela {
+    font-family: 'Varela Round', sans-serif;
+}
+
+/* Smooth scrolling behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Header styles for backdrop blur effect */
+header {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background-color: var(--header-bg-color);
+    transition: background-color 0.3s ease;
+}
+
+/* Custom card shadow */
+.card-shadow {
+        box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -2px var(--shadow-color);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -2px var(--shadow-color);
+}
+
+/* Custom button styles */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+}
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+.btn-secondary:hover {
+        background-color: var(--primary-color);
+        color: var(--bg-color);
+}
+
+/* Custom link styles */
+.nav-link {
+    position: relative;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+.nav-link:hover {
+    color: var(--primary-color);
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Custom tag style */
+.tag {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    font-weight: 500;
+}
+html.dark .tag {
+        background-color: var(--primary-color);
+        color: #0A192F; /* Dark text for light background in dark mode */
+}
+
+/* Scroll animation styles */
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}

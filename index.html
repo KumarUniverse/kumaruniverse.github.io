@@ -1,19 +1,483 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akash Kumar - Software Dev</title>
-    <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="profile.css">
+    <title>Akash Kumar - Software Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Varela+Round&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
 </head>
+<body class="antialiased">
 
-<body>
-    <h1>Akash Kumar</h1>
-    <h2>WEBSITE UNDER CONSTRUCTION</h2>
-    <img src="profile.jpg" alt="My profile" class="center-image">
-    <p>The duck walked up to the corner store and said to the
-        man running the store, "Hey, got any grapes?".</p>
+    <canvas id="left-wave" class="wave-canvas"></canvas>
+    <canvas id="right-wave" class="wave-canvas"></canvas>
+
+    <!-- Header and Navigation -->
+    <header class="sticky top-0 z-50 w-full">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold font-varela" style="color: var(--primary-color);">AK</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#education" class="nav-link">Education</a>
+                <!-- Dropdown Menu for "Other" -->
+                <div class="relative group">
+                    <button class="nav-link flex items-center focus:outline-none">
+                        Other
+                        <svg class="w-4 h-4 ml-1 transform group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="absolute hidden group-hover:block mt-2 py-2 w-48 rounded-lg shadow-xl" style="background-color: var(--card-bg-color);">
+                        <a href="#certifications" class="block px-4 py-2 nav-link">Certifications</a>
+                        <a href="#awards" class="block px-4 py-2 nav-link">Awards</a>
+                        <a href="#activities" class="block px-4 py-2 nav-link">Activities</a>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2" style="color: var(--primary-color); background-color: var(--card-bg-color); focus:ring-color: var(--primary-color);">
+                    <!-- Sun and Moon Icons -->
+                    <svg id="theme-icon-light" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg id="theme-icon-dark" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                 <a href="assets/Akash_Kumar_Resume.pdf" download class="hidden md:inline-block btn-primary px-4 py-2 rounded-lg font-semibold transition-transform duration-300 hover:scale-105">Download Resume</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none" style="color: var(--primary-color);">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2">
+            <a href="#about" class="block nav-link text-center py-2">About</a>
+            <a href="#skills" class="block nav-link text-center py-2">Skills</a>
+            <a href="#experience" class="block nav-link text-center py-2">Experience</a>
+            <a href="#projects" class="block nav-link text-center py-2">Projects</a>
+            <a href="#education" class="block nav-link text-center py-2">Education</a>
+            <div>
+                <button id="mobile-other-button" class="w-full nav-link text-center py-2 flex items-center justify-center">
+                    Other
+                    <svg id="mobile-other-arrow" class="w-4 h-4 ml-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="mobile-other-menu" class="hidden pl-4">
+                    <a href="#certifications" class="block nav-link text-center py-2">Certifications</a>
+                    <a href="#awards" class="block nav-link text-center py-2">Awards</a>
+                    <a href="#activities" class="block nav-link text-center py-2">Activities</a>
+                </div>
+            </div>
+            <a href="Akash_Kumar_Software_Engineer_Resume.pdf" download class="block btn-primary text-center mt-2 px-4 py-2 rounded-lg font-semibold">Download Resume</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- Hero Section -->
+        <section id="home" class="flex flex-col md:flex-row items-center justify-between min-h-[80vh]">
+            <div class="md:w-1/2 flex justify-center mb-10 md:mb-0">
+                <img src="assets/akash-profile-photo.png" alt="Akash profile picture" class="rounded-full w-64 h-64 md:w-80 md:h-80 object-cover card-shadow" onerror="this.onerror=null;this.src='https://placehold.co/400x400/82EEFD/023E8A?text=AK';">
+            </div>
+            <div class="md:w-1/2 text-center md:text-left">
+                <h1 class="text-4xl md:text-7xl font-bold mb-2 font-varela" style="color: var(--primary-color);">Akash Kumar</h1>
+                <h2 class="text-2xl md:text-4xl font-semibold mb-4 font-varela">Software Engineer</h2>
+                <div class="flex justify-center md:justify-start space-x-4">
+                    <a href="https://linkedin.com/in/akash-kumar-universe" target="_blank" class="btn-primary px-6 py-3 rounded-lg font-semibold transition-transform duration-300 hover:scale-105">Get In Touch</a>
+                    <a href="https://github.com/KumarUnivers" target="_blank" class="btn-secondary px-6 py-3 rounded-lg font-semibold transition-transform duration-300">View GitHub</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center mb-12 font-varela">About Me</h2>
+            <div class="max-w-4xl mx-auto text-center text-lg leading-relaxed">
+                <p>
+                    I am a Software Engineer with a strong foundation and hands-on experience in machine learning, data analysis, statistical modeling and software engineering. I am passionate about building elegant and efficient software solutions to complex problems. Over the past few years, I've had the opportunity to work with a diverse range of tools, languages, and frameworks. I am actively seeking entry-level or internship positions to apply my skills and gain valuable industry experience, and I'm also open to mid-level roles that offer opportunities for career advancement and growth.
+                </p>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center mb-12 font-varela">Technical Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <h3 class="text-xl font-semibold mb-4" style="color: var(--primary-color);">Languages</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>Python (Expert)</li>
+                        <li>Java (Proficient)</li>
+                        <li>C/C++ (Proficient)</li>
+                        <li>JavaScript</li>
+                        <li>SQL</li>
+                        <li>MATLAB</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <h3 class="text-xl font-semibold mb-4" style="color: var(--primary-color);">Paradigms & Methodologies</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>Object-Oriented</li>
+                        <li>Functional</li>
+                        <li>Declarative</li>
+                        <li>Event-Driven</li>
+                        <li>Agile</li>
+                        <li>Scrum</li>
+                        <li>DevOps</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <h3 class="text-xl font-semibold mb-4" style="color: var(--primary-color);">Tools & Frameworks</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>Git</li>
+                        <li>Version Control</li>
+                        <li>TensorFlow</li>
+                        <li>PyTorch</li>
+                        <li>Keras</li>
+                        <li>NumPy</li>
+                        <li>Pandas</li>
+                        <li>Linux</li>
+                        <li>CLIs</li>
+                        <li>LLMs</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <h3 class="text-xl font-semibold mb-4" style="color: var(--primary-color);">Machine Learning & Data Science</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>Deep Learning</li>
+                        <li>Data Mining</li>
+                        <li>Classification</li>
+                        <li>Regression</li>
+                        <li>Prediction</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center mb-12 font-varela">Professional Experience</h2>
+            <div class="max-w-4xl mx-auto space-y-8">
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-xl font-semibold" style="color: var(--primary-color);">Teaching Assistant</h3>
+                            <p class="font-medium">Dept. of Computer Science and Engineering, Penn State University, PA, USA</p>
+                        </div>
+                        <p class="text-sm font-medium whitespace-nowrap">Aug 2022 - Present</p>
+                    </div>
+                    <ul class="mt-4 list-disc list-inside space-y-2">
+                        <li>Instructed courses including Data Structures & Algorithms, Communication Networks, and Theory of Computation.</li>
+                        <li>Managed office hours, graded assignments, and coordinated with fellow TAs for efficient course support.</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-xl font-semibold" style="color: var(--primary-color);">Data Analyst Intern</h3>
+                            <p class="font-medium">nth Solutions, LLC, Coatesville, PA, USA</p>
+                        </div>
+                        <p class="text-sm font-medium whitespace-nowrap">May 2021 - Aug 2021</p>
+                    </div>
+                    <ul class="mt-4 list-disc list-inside space-y-2">
+                        <li>Examined IMU sensor data using Python, MATLAB, and Octave to extract actionable insights.</li>
+                        <li>Implemented sensor fusion using quaternions, complementary, and Kalman filters.</li>
+                        <li>Optimized algorithm performance by converting from Python to MATLAB, achieving a 3x speed improvement.</li>
+                    </ul>
+                </div>
+                 <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-xl font-semibold" style="color: var(--primary-color);">Research Assistant</h3>
+                            <p class="font-medium">Dept. of Computer Science, West Chester University, PA, USA</p>
+                        </div>
+                        <p class="text-sm font-medium whitespace-nowrap">Oct 2020 - May 2021</p>
+                    </div>
+                    <ul class="mt-4 list-disc list-inside space-y-2">
+                        <li>Conducted statistical analysis of Eclipse refactoring bug reports in a team of 6.</li>
+                        <li>Collected 5000+ bug reports from Bugzilla using Python's Beautiful Soup library.</li>
+                        <li>Presented findings at WCU's Spring 2021 Research and Creative Activity Day.</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-xl font-semibold" style="color: var(--primary-color);">Club Co-founder and President</h3>
+                            <p class="font-medium">Competitive Programming Club, West Chester University, PA, USA</p>
+                        </div>
+                        <p class="text-sm font-medium whitespace-nowrap">Aug. 2019 – May 2021</p>
+                    </div>
+                    <ul class="mt-4 list-disc list-inside space-y-2">
+                        <li>Fostered a competitive and fun atmosphere to encourage active club participation.</li>
+                        <li>Curated problems and study material to help members prepare for programming competitions.</li>
+                        <li>Developed guidelines, systems and methods to ensure the club’s growth and success.</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-xl font-semibold" style="color: var(--primary-color);">Social Media Lead</h3>
+                            <p class="font-medium">Institute for Networking and Security Research (INSR), Penn State University, PA, USA</p>
+                        </div>
+                        <p class="text-sm font-medium whitespace-nowrap">Nov. 2024 - present</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center mb-12 font-varela">Projects</h2>
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <a href='https://github.com/KumarUniverse/simsiam-logo-identifier'>
+                <div class="rounded-xl card-shadow flex flex-col overflow-hidden" style="background-color: var(--card-bg-color);">
+                    <img src="assets/car-logos.jpg" alt="Car Logo Identifier Project" class="aspect-[16/10] object-cover w-full" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/FFFFFF?text=Error';">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold mb-2" style="color: var(--primary-color);">Car Logo Identifier</h3>
+                        <p class="mb-4 flex-grow">A computer vision project that uses a SimSiam neural network for unsupervised learning to identify car brands from logos.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag text-xs px-2 py-1 rounded-full">PyTorch</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">Computer Vision</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">GPU Acceleration</span>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                <!-- Project 2 -->
+                <a href='https://github.com/KumarUniverse/heart-disease-predictor'>
+                <div class="rounded-xl card-shadow flex flex-col overflow-hidden" style="background-color: var(--card-bg-color);">
+                    <img src="assets/heart-pulse.png" alt="Heart Disease Predictor Project" class="aspect-[16/10] object-cover w-full" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/FFFFFF?text=Error';">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold mb-2" style="color: var(--primary-color);">Heart Disease Predictor</h3>
+                        <p class="mb-4 flex-grow">Predicts heart disease in patients using various ML models. Built for the HarvardX data science professional certificate.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag text-xs px-2 py-1 rounded-full">R</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">Markdown</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">Machine Learning</span>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                <!-- Project 3 -->
+                <a href='https://github.com/KumarUniverse/quiz-wiz'>
+                <div class="rounded-xl card-shadow flex flex-col overflow-hidden" style="background-color: var(--card-bg-color);">
+                    <img src="assets/quiz-wizard.jpg" alt="Quiz Wiz Project" class="aspect-[16/10] object-cover w-full" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/FFFFFF?text=Error';">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold mb-2" style="color: var(--primary-color);">Quiz Wiz</h3>
+                        <p class="mb-4 flex-grow">A simple quiz generator built at HackNYU Spring 2019. Uses Beautiful Soup to parse HTML documents for content.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag text-xs px-2 py-1 rounded-full">JavaScript</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">HTML</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">CSS</span>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                <!-- Project 4 -->
+                <a href='https://github.com/KumarUniverse/earthseed'>
+                <div class="extra-project fade-in-section rounded-xl card-shadow flex flex-col overflow-hidden hidden" style="background-color: var(--card-bg-color);">
+                    <img src="assets/earthseed-hardware.jpg" alt="Earthseed Project" class="aspect-[16/10] object-cover w-full" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/FFFFFF?text=Error';">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold mb-2" style="color: var(--primary-color);">Earthseed</h3>
+                        <p class="mb-4 flex-grow">An Arduino game based on the text-based space colonization game Seedship.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag text-xs px-2 py-1 rounded-full">Arduino</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">C++</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">DIY Electronics</span>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                <!-- Project 5 -->
+                <a href='https://github.com/KumarUniverse/pong-ai'>
+                <div class="extra-project fade-in-section rounded-xl card-shadow flex flex-col overflow-hidden hidden" style="background-color: var(--card-bg-color);">
+                    <img src="assets/pong-ai-gameplay.png" alt="Q-learning Pong AI" class="aspect-[16/10] object-cover w-full" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/FFFFFF?text=Error';">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold mb-2" style="color: var(--primary-color);">Pong AI</h3>
+                        <p class="mb-4 flex-grow">A Q-learning based AI agent that learns to play the Pong arcade game.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag text-xs px-2 py-1 rounded-full">TensorFlow</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">Keras</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">Pyglet</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">Python</span>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                <!-- Project 6 -->
+                <a href='https://github.com/KumarUniverse/golden-ram-shell'>
+                <div class="extra-project fade-in-section rounded-xl card-shadow flex flex-col overflow-hidden hidden" style="background-color: var(--card-bg-color);">
+                    <img src="assets/grsh-shell-console.png" alt="Golden Ram SHell Project" class="aspect-[16/10] object-cover w-full" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/FFFFFF?text=Error';">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold mb-2" style="color: var(--primary-color);">Golden Ram Shell</h3>
+                        <p class="mb-4 flex-grow">A simple Linux shell. Implemented basic Linux commands and learned how to use system calls.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag text-xs px-2 py-1 rounded-full">C</span>
+                            <span class="tag text-xs px-2 py-1 rounded-full">System Calls</span>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="mt-8 text-center">
+                <button id="toggle-projects-btn" class="btn-secondary px-6 py-3 rounded-lg font-semibold transition-transform duration-300 flex items-center mx-auto">
+                    <span id="toggle-btn-text">View More</span>
+                    <svg id="chevron-down" class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    <svg id="chevron-up" class="w-5 h-5 ml-2 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="py-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center mb-12 font-varela">Education</h2>
+            <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <h3 class="text-xl font-semibold" style="color: var(--primary-color);">Master of Science, Computer Science</h3>
+                    <p class="font-medium mb-2">West Chester University</p>
+                    <p class="font-medium mb-2">West Chester, Pennsylvania, USA</p>
+                    <p class="text-sm">Aug 2020 - Dec 2021</p>
+                    <p class="text-sm">GPA: 4.0</p>
+                </div>
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <h3 class="text-xl font-semibold" style="color: var(--primary-color);">Bachelor of Science, Computer Science</h3>
+                    <p class="font-medium mb-2">West Chester University</p>
+                    <p class="font-medium mb-2">West Chester, Pennsylvania, USA</p>
+                    <p class="text-sm">Aug 2017 - May 2020</p>
+                    <p class="text-sm">GPA: 4.0</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Certifications Section -->
+        <section id="certifications" class="py-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center mb-12 font-varela">Certifications</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <ul class="list-disc list-outside pl-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <li class="font-medium">Deep Learning Specialization from DeepLearning.AI</li>
+                        <li class="font-medium">AWS Certified Cloud Practitioner</li>
+                        <li class="font-medium">Oracle Certified Professional, Java SE 11</li>
+                        <li class="font-medium">Scrum Alliance Certified Scrum Master</li>
+                        <li class="font-medium">Data Science Professional Certificate from HarvardX</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Awards and Memberships Section -->
+        <section id="awards" class="py-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center mb-12 font-varela">Awards and Memberships</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <ul class="space-y-4">
+                        <li>
+                            <div class="flex justify-between items-start">
+                                <div><span class="mr-2">&bull;</span><span><b>The Outstanding Graduate Student Award of 2022</b></span></div>
+                                <span class="text-sm font-medium whitespace-nowrap pl-4">April 2022</span>
+                            </div>
+                            <ul class="list-disc list-outside pl-12 text-sm mt-2 space-y-1">
+                                <li>Awarded April 25th, 2022 by Dr. Richard Burns, Chair of the Computer Science Dept. of West Chester University.</li>
+                                <li>This annual award is reserved for one graduate student in the department who goes above and beyond in their academics and research work, and is an inspiring role model for others to follow.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="flex justify-between items-start">
+                                <div><span class="mr-2">&bull;</span><span><b>Upsilon Pi Epsilon Honor Society for the Computing and Information Disciplines</b></span></div>
+                                <span class="text-sm font-medium whitespace-nowrap pl-4">April 2022</span>
+                            </div>
+                            <ul class="list-disc list-outside pl-12 text-sm mt-2 space-y-1">
+                                <li>Inducted April 1st, 2022 by the West Chester University chapter of UPE.</li>
+                                <li>Invites to join UPE are based on outstanding achievement, high scholarship and character.</li>
+                            </ul>
+                        </li>
+                        <li class="flex justify-between items-start">
+                            <div><span class="mr-2">&bull;</span><span><b>IEEE Student Member</b></span></div>
+                            <span class="text-sm font-medium whitespace-nowrap pl-4">Feb 2022</span>
+                        </li>
+                        <li>
+                            <div class="flex justify-between items-start">
+                                <div><span class="mr-2">&bull;</span><span><b>International Collegiate Programming Contest Mid-Atlantic Region Honorable Mention</b></span></div>
+                                <span class="text-sm font-medium whitespace-nowrap pl-4">Nov 2019</span>
+                            </div>
+                            <ul class="list-disc list-outside pl-12 text-sm mt-2 space-y-1">
+                                <li>Awarded for participating in the ICPC programming cotest at Wilkes University, PA, USA.</li>
+                                <li>Solved 2 out of 8 problems.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="flex justify-between items-start">
+                                <div><span class="mr-2">&bull;</span><span><b>Physics Award of Excellence</b></span></div>
+                                <span class="text-sm font-medium whitespace-nowrap pl-4">May 2017</span>
+                            </div>
+                            <ul class="list-disc list-outside pl-12 text-sm mt-2 space-y-1">
+                                <li>Awarded by the science department of Downingtown East High School.</li>
+                                <li>Nominated for the award by physics teacher Mr. Zachary Barnhart.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="flex justify-between items-start">
+                                <div><span class="mr-2">&bull;</span><span><b>The National Society of High School Scholars</b></span></div>
+                                <span class="text-sm font-medium whitespace-nowrap pl-4">Oct 2016</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex justify-between items-start">
+                                <div><span class="mr-2">&bull;</span><span><b>National Academy of Future Scientists and Technologists Award of Excellence</b></span></div>
+                                <span class="text-sm font-medium whitespace-nowrap pl-4">Sept 2016</span>
+                            </div>
+                            <ul class="list-disc list-outside pl-12 text-sm mt-2 space-y-1">
+                                <li>Awarded for "outstanding academic achievement, leadership potential and determination to serve humanity in the field of science and technology".</li>
+                                <li>Judgement rendered with reference to the nomination of Dr. John C. Mather executed in Boston, MA, USA.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Relevant Activities Section -->
+        <section id="activities" class="py-20 fade-in-section">
+            <h2 class="text-4xl font-bold text-center mb-12 font-varela">Relevant Activities</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="p-6 rounded-xl card-shadow" style="background-color: var(--card-bg-color);">
+                    <ul class="space-y-4">
+                        <li class="flex justify-between items-start">
+                            <div><span class="mr-2">&bull;</span><span><b>Penn State CSE Girls Summer Camp 2025</b> – Lead Counselor</span></div>
+                            <span class="text-sm font-medium whitespace-nowrap pl-4">June 2025</span>
+                        </li>
+                        <li class="flex justify-between items-start">
+                           <div><span class="mr-2">&bull;</span><span><b>Penn State CSE Girls Summer Camp 2022</b> – Student Volunteer</span></div>
+                            <span class="text-sm font-medium whitespace-nowrap pl-4">June 2022</span>
+                        </li>
+                        <li class="flex justify-between items-start">
+                            <div><span class="mr-2">&bull;</span><span><b>WCU Computer Science Club</b> – Member</span></div>
+                            <span class="text-sm font-medium whitespace-nowrap pl-4">Aug. 2017 – May 2020</span>
+                        </li>
+                        <li class="flex justify-between items-start">
+                            <div><span class="mr-2">&bull;</span><span>3 hackathons, 2 MLH Local Hack Days</span></div>
+                            <span class="text-sm font-medium whitespace-nowrap pl-4">Dec. 2017 – May 2020</span>
+                        </li>
+                        <li class="flex justify-between items-start">
+                            <div><span class="mr-2">&bull;</span><span>3 programming competitions</span></div>
+                            <span class="text-sm font-medium whitespace-nowrap pl-4">Jan. 2019 – Jan. 2021</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-6" style="background-color: var(--card-bg-color);">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Akash Kumar. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='profile-animations.js') }}"></script>
+
 </body>
-
 </html>
